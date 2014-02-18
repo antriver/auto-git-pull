@@ -13,5 +13,5 @@
         "psr-0": {
             "TMD\\GitDeployer": "src/"
         }
-    },
+    }
 }
