@@ -1,6 +1,6 @@
-This allows you to automatically deploy your changes into production when you push to a git repo. Install this package on your web server and add a 'hook' in your repo which POSTS to this script.
+This allows you to automatically deploy your changes into production when you push to a git repo. Install this package on your web server and add a 'hook' in your repo which notifies (runs) this script.
 
-There are two parts
+There are two parts:
 * A PHP script which Bitbucket or Github will automatically send a request to when you push. (`http://your-site.com/deploy.php` in the examples below)
 * A shell script which does the actual pulling. The PHP script calls this script. (`/sites/whodel/deployer/git-pull.sh` in the examples below)
 
@@ -8,9 +8,7 @@ The reason for the separation is so you don't need to grant the web user write p
 
 ## Installation
 
-In these examples
-
-1. Install using composer
+* Install using composer
 
 ```json
 {
@@ -27,9 +25,9 @@ In these examples
 
 ```
 
-2. Copy the `usage.php` to a publicly accessible location on your server (e.g. `http://your-site.com/deploy.php`) and edit the settings as appropriate.
+* Copy the `usage.php` script to a publicly accessible location on your server (e.g. `http://your-site.com/deploy.php`) and edit the settings as appropriate.
 
-3. Allow the user to run the pull script as a user with write permissions:
+* Allow the user to run the pull script as a user with write permissions:
 
 ```
 sudo visudo
@@ -43,22 +41,22 @@ sudo visudo
 www-data ALL=(anthony) NOPASSWD: /sites/whodel/deployer/git-pull.sh
 ```
 
-4. Make the shell script executable
+* Make the shell script executable
 
 ```
 chmod +x /sites/whodel/deploy/git-pull.sh
 ```
 
-5. Add your server's public key to git repo
+* Add your server's public key to git repo
 
 Bitbucket: https://confluence.atlassian.com/pages/viewpage.action?pageId=270827678
 Github: Haven't tried that yet, good luck
 
-6. Change your git 'remote' used to pull from an http url to an SSH one if required
-``
+* Change your git 'remote' used to pull from an http url to an SSH one if required
+```
 cd /sites/whodel
 git remote -v
-``
+```
 
 If your output looks like this:
 ```
@@ -71,8 +69,7 @@ Change it, like this:
 git remote set-url origin git@bitbucket.org:antriver/who-deleted-me.git
 ```
 
-
-7. Add the hook on Bitbucket:
+* Add the hook on Bitbucket:
 
 ![Add bitbucket deploy hook](http://img.ctrlv.in/img/53038a61539f9.png)
 
