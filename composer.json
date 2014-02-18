@@ -10,8 +10,8 @@
 		}
 	],
 	"autoload": {
-        "psr-0": {
-            "TMD\\GitDeployer": "src/"
+        "psr-4": {
+            "TMD\\GitDeployer\\": "src/"
         }
     }
 }

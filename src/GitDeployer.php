@@ -204,6 +204,20 @@ class GitDeployer
 		}
 	}
 
+	private function logPostedData()
+	{
+		//Log POST data
+		if (isset($_POST)) {
+
+			if (isset($_POST['payload'])) {
+				$_POST['payload'] = json_decode($_POST['payload']);
+			}
+
+			$this->log(print_r($_POST, true), 'POST');
+
+		}
+	}
+
 	/**
 	* Executes the necessary commands to deploy the website.
 	*/
@@ -220,6 +234,7 @@ class GitDeployer
 			} else {
 
 				$this->log("IP is {$_SERVER['REMOTE_ADDR']}");
+				$this->logPostedData();
 
 				if (!in_array($_SERVER['REMOTE_ADDR'], $this->allowedIPs)) {
 					header('HTTP/1.1 403 Forbidden');
