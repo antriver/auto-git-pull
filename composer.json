@@ -9,4 +9,9 @@
 			"homepage": "http://www.anthonykuske.com"
 		}
 	]
+	"autoload": {
+        "psr-0": {
+            "TMD\GitDeployer": "src/"
+        }
+    },
 }
