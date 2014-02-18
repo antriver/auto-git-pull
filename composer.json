@@ -1,0 +1,15 @@
+{
+	"name": "tmd/gitdeployer",
+	"description": "Hook to automatically pull git commits into production.",
+	"license": "MIT",
+	"version": "1.0.0",
+	"require": {
+		"laravel/framework": "4.1.*"
+	},
+	"authors": [
+		{
+			"name": "Anthony Kuske",
+			"homepage": "http://www.anthonykuske.com",
+		}
+	]
+}
