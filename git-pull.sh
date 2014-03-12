@@ -31,6 +31,9 @@ git fetch $remote 2>&1
 echo "git reset --hard $remote/$branch 2>&1"
 git reset --hard $remote/$branch 2>&1
 
+echo "git submodule init"
+git submodule init
+
 echo "git submodule update"
 git submodule update
 
