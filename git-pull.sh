@@ -39,3 +39,6 @@ git submodule update
 
 echo "chmod +x $0"
 chmod +x $0
+
+echo "composer install"
+composer install
