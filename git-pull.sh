@@ -39,6 +39,3 @@ git submodule update
 
 echo "composer install"
 composer install
-
-echo "composer update"
-composer update
