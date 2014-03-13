@@ -42,3 +42,6 @@ chmod +x $0
 
 echo "composer install"
 composer install
+
+echo "composer update"
+composer update
