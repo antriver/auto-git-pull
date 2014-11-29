@@ -2,7 +2,7 @@
 
 require 'vendor/autoload.php';
 
-$deployer = new Tmd\AutoGitPull\Deployer(array(
+$deployer = new \Tmd\AutoGitPull\Deployer(array(
 	'deployUser' => 'anthony',
 	'directory' => '/var/www/mysite/',
 	'logDirectory' => __DIR__ . '/log/',

@@ -229,6 +229,20 @@ class Deployer
 		}
 	}
 
+	protected function getIp()
+	{
+		if (!empty($_SERVER['CF-Connecting-IP'])) {
+			return $_SERVER['CF-Connecting-IP'];
+		}
+		if (!empty($_SERVER['HTTP_X_FORWARDED'])) {
+			return $_SERVER['HTTP_X_FORWARDED'];
+		}
+		if (!empty($_SERVER['REMOTE_ADDR'])) {
+			return $_SERVER['REMOTE_ADDR'];
+		}
+		return null;
+	}
+
 	/**
 	* Executes the necessary commands to deploy the website.
 	*/
@@ -244,12 +258,14 @@ class Deployer
 
 			} else {
 
-				$this->log("IP is {$_SERVER['REMOTE_ADDR']}");
+				$ip = $this->getIp();
+
+				$this->log("IP is {$ip}");
 				$this->logPostedData();
 
-				if (!in_array($_SERVER['REMOTE_ADDR'], $this->allowedIPs)) {
+				if (!in_array($ip, $this->allowedIPs)) {
 					header('HTTP/1.1 403 Forbidden');
-					throw new Exception($_SERVER['REMOTE_ADDR'].' is not an authorised Remote IP Address');
+					throw new Exception($ip.' is not an authorised Remote IP Address');
 				}
 
 			}
