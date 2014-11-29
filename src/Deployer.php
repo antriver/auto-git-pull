@@ -216,6 +216,21 @@ class Deployer
 		}
 	}
 
+	private function logHeaders()
+	{
+		if (empty($_SERVER)) {
+			return false;
+		}
+		$headers = [];
+		foreach ($_SERVER as $name => $value)
+		{
+			if (substr($name, 0, 5) == 'HTTP_') {
+				$headers[$name] = $value;
+			}
+		}
+		$this->log(print_r($headers, true), 'INFO');
+	}
+
 	private function logPostedData()
 	{
 		// Log POST data
@@ -259,8 +274,8 @@ class Deployer
 			} else {
 
 				$ip = $this->getIp();
-
 				$this->log("IP is {$ip}");
+				$this->logHeaders();
 				$this->logPostedData();
 
 				if (!in_array($ip, $this->allowedIPs)) {
