@@ -95,3 +95,10 @@ Change it to use ssh, like this:
 git remote set-url origin git@bitbucket.org:me/mysite.git
 ```
 
+
+#### Bugs
+
+When instaling or updating the package you might need to set the pull script as executable if it isn't already:
+```bash
+chmod +x vendor/tmd/auto-git-pull/scripts/git-pull.sh
+```
