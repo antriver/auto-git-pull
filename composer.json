@@ -1,8 +1,7 @@
 {
-	"name": "tmd/gitdeployer",
-	"description": "Hook to automatically pull git commits into production.",
+	"name": "tmd/auto-git-pull",
+	"description": "Automatically pulls a git repository when commits are pushed.",
 	"license": "MIT",
-	"version": "1.0.0",
 	"authors": [
 		{
 			"name": "Anthony Kuske",
@@ -11,7 +10,7 @@
 	],
 	"autoload": {
         "psr-4": {
-            "TMD\\GitDeployer\\": "src/"
+            "Tmd\\AutoGitPull\\": "src/"
         }
     }
 }
