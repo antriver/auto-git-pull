@@ -7,7 +7,7 @@ $deployer = new Tmd\AutoGitPull\Deployer(array(
 	'directory' => '/var/www/mysite/',
 	'logDirectory' => __DIR__ . '/log/',
 	'notifyEmails' => array(
-		'anthonykuske@gmail.com'
+		'me@gmail.com'
 	)
 ));
 
