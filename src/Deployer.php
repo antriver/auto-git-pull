@@ -175,7 +175,7 @@ class Deployer
 
 		// Set a log filename
 		if (!empty($this->logDirectory)) {
-			$this->logFile = $options['logDirectory'] . 'git-auto-deploy-' . time() . '.log';
+			$this->logFile = $options['logDirectory'] . 'auto-git-pull-' . time() . '.log';
 		}
 
 		// Should we send emails?
