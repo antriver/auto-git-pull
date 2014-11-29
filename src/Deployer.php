@@ -246,11 +246,11 @@ class Deployer
 
 	protected function getIp()
 	{
-		if (!empty($_SERVER['CF-Connecting-IP'])) {
-			return $_SERVER['CF-Connecting-IP'];
+		if (!empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+			return $_SERVER['HTTP_CF_CONNECTING_IP'];
 		}
-		if (!empty($_SERVER['HTTP_X_FORWARDED'])) {
-			return $_SERVER['HTTP_X_FORWARDED'];
+		if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+			return $_SERVER['HTTP_X_FORWARDED_FOR'];
 		}
 		if (!empty($_SERVER['REMOTE_ADDR'])) {
 			return $_SERVER['REMOTE_ADDR'];
