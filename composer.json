@@ -12,5 +12,13 @@
         "psr-4": {
             "Tmd\\AutoGitPull\\": "src/"
         }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "chmod +x vendor/tmd/auto-git-pull/scripts/git-pull.sh"
+        ],
+        "post-update-cmd": [
+            "chmod +x vendor/tmd/auto-git-pull/scripts/git-pull.sh"
+        ]
     }
 }

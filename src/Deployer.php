@@ -293,7 +293,12 @@ class Deployer
 			. " -r {$this->remote}";
 
 
-			$cmd = "sudo -u {$this->deployUser} {$script} 2>&1";
+			$cmd = "{$script} 2>&1";
+
+			if (!empty($this->deployUser)) {
+				$cmd = "sudo -u {$this->deployUser} {$cmd}";
+			}
+
 			echo "\n" . $cmd;
 
 			$this->log($cmd);
