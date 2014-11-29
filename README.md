@@ -28,9 +28,14 @@ sudo visudo
 # (Edit users and path as appropriate)
 # www-data = User the PHP script runs as
 # anthony = User the shell script needs to run as to write to the directory
-# /var/www/mysite/vendor/tmp/auto-git-pull/scripts/git-pull.sh = Path to shell script
+# /var/www/mysite/vendor/tmd/auto-git-pull/scripts/git-pull.sh = Path to shell script
 
-www-data ALL=(anthony) NOPASSWD: /var/www/mysite/vendor/tmp/auto-git-pull/scripts/git-pull.sh
+www-data ALL=(anthony) NOPASSWD: /var/www/mysite/vendor/tmd/auto-git-pull/scripts/git-pull.sh
+```
+
+* You might need to fix the permissions on the pull script
+```bash
+chmod +x vendor/tmd/auto-git-pull/scripts/git-pull.sh
 ```
 
 ### If your repository is private
