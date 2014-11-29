@@ -19,6 +19,11 @@ Setup
 
 * Install the latest version with `composer require tmd/auto-git-pull`
 
+* Make the pull script executable (you need to do this if you update the package as well):
+```bash
+chmod +x vendor/tmd/auto-git-pull/scripts/git-pull.sh
+```
+
 * Create a publicy accessible URL on your site which will be called by Github/Bitbucket and run the deployment (e.g. `http://mysite.com/deploy.php`) and set the parameters as appropriate. See `deploy.example.php` for an example.
 
 Example in Laravel:
@@ -93,12 +98,4 @@ origin	https://bitbucket.org/me/mysite.git (push)
 Change it to use ssh, like this:
 ```
 git remote set-url origin git@bitbucket.org:me/mysite.git
-```
-
-
-#### Bugs
-
-When instaling or updating the package you might need to set the pull script as executable if it isn't already:
-```bash
-chmod +x vendor/tmd/auto-git-pull/scripts/git-pull.sh
 ```
