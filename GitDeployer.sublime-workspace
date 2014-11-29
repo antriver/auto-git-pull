@@ -1,0 +1,613 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"de",
+				"deployUser"
+			],
+			[
+				"deploy",
+				"deployScript"
+			],
+			[
+				"json_",
+				"json_encode"
+			],
+			[
+				"font-se",
+				"font-style"
+			],
+			[
+				"refresh",
+				"refreshCache"
+			],
+			[
+				"empty",
+				"empty_tag"
+			],
+			[
+				"array",
+				"array_chunk"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/Volumes/Macintosh HD/Dropbox/Websites/Packages/GitDeployer/src/GitDeployer.php",
+			"settings":
+			{
+				"buffer_size": 7059,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Volumes/Macintosh HD/Dropbox/Websites/Packages/GitDeployer/git-pull.sh",
+			"settings":
+			{
+				"buffer_size": 546,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 137.0,
+		"selected_items":
+		[
+			[
+				"sniff",
+				"PHP Code Sniffer: Sniff this file"
+			],
+			[
+				"php",
+				"Set Syntax: PHP"
+			],
+			[
+				"package",
+				"Package Control: List Packages"
+			],
+			[
+				"pac",
+				"Package Control: Disable Package"
+			],
+			[
+				"diff",
+				"Git: Diff"
+			]
+		],
+		"width": 705.0
+	},
+	"console":
+	{
+		"height": 132.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Volumes/Macintosh HD/Dropbox/Websites/Packages/GitDeployer/Readme.txt",
+		"/Volumes/Macintosh HD/Dropbox/Websites/Packages/GitDeployer/src/GitDeployer.php",
+		"/Volumes/Macintosh HD/Dropbox/Websites/Packages/GitDeployer/composer.json",
+		"/Volumes/Macintosh HD/Dropbox/Websites/Packages/GitDeployer/vendor/composer/ClassLoader.php",
+		"/Volumes/Macintosh HD/Dropbox/Websites/Packages/GitDeployer/usage.php",
+		"/Volumes/Macintosh HD/Dropbox/Websites/Packages/GitDeployer/vendor/composer/autoload_psr4.php",
+		"/Volumes/Macintosh HD/Dropbox/Websites/Packages/GitDeployer/vendor/composer/autoload_real.php",
+		"/Volumes/Macintosh HD/Dropbox/Websites/WhoDeletedMe/public_html/deployer/Readme.txt",
+		"/Volumes/Macintosh HD/Dropbox/Websites/WhoDeletedMe/public_html/public_html/git-pull.php",
+		"/Volumes/Macintosh HD/Dropbox/Websites/WhoDeletedMe/public_html/deployer/git-pull.class.php",
+		"/Volumes/Macintosh HD/Dropbox/Websites/WhoDeletedMe/public_html/public_html/includes/wdmfrontend.php",
+		"/Volumes/Macintosh HD/Dropbox/Websites/WhoDeletedMe/public_html/public_html/app/deleted.php",
+		"/Volumes/Macintosh HD/Dropbox/Websites/WhoDeletedMe/public_html/deploy/git-pull.sh",
+		"/Volumes/Macintosh HD/Dropbox/Websites/WhoDeletedMe/public_html/deploy/git-pull.php",
+		"/Volumes/Macintosh HD/Dropbox/Websites/WhoDeletedMe/public_html/deploy/git-pull.class.php",
+		"/Volumes/Macintosh HD/Dropbox/Websites/WhoDeletedMe/public_html/deploy/Readme.txt",
+		"/Volumes/Macintosh HD/Dropbox/Websites/WhoDeletedMe/public_html/assetmaker/lib/AssetMaker.php",
+		"/Volumes/Macintosh HD/Dropbox/Websites/WhoDeletedMe/public_html/deploy/log/.gitignore",
+		"/Volumes/Macintosh HD/Dropbox/Websites/WhoDeletedMe/public_html/public_html/assets/generated/.gitignore",
+		"/Volumes/Macintosh HD/Dropbox/Websites/WhoDeletedMe/public_html/public_html/robots.txt",
+		"/Volumes/Macintosh HD/Dropbox/Websites/WhoDeletedMe/public_html/public_html/includes/newads.php",
+		"/Volumes/Macintosh HD/Dropbox/Websites/WhoDeletedMe/public_html/app/Model/WDMUser.php",
+		"/Users/Anthony/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/Anthony/dragonnet/moodle/blocks/search/index.php",
+		"/Users/Anthony/dragonnet/moodle/blocks/search/MoodleSearch/Model/Search.php",
+		"/Users/Anthony/dragonnet/moodle/blocks/search/version.php",
+		"/Users/Anthony/dragonnet/moodle/blocks/search/settings.php",
+		"/Users/Anthony/dragonnet/moodle/blocks/search/lang/en/block_search.php",
+		"/Users/Anthony/dragonnet/moodle/theme/clean/lib.php",
+		"/Users/Anthony/dragonnet/moodle/lib/adminlib.php",
+		"/Users/Anthony/dragonnet/moodle/blocks/search/assets/css/page.css",
+		"/Users/Anthony/dragonnet/moodle/blocks/search/MoodleSearch/Block.php",
+		"/Users/Anthony/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/Users/Anthony/dragonnet/moodle/lib/moodlelib.php",
+		"/Users/Anthony/dragonnet/moodle/local/codechecker/moodle/tests/fixtures/moodle_comenting_inlinecomment.php",
+		"/Users/Anthony/dragonnet/moodle/.idea/moodle.iml",
+		"/Users/Anthony/dragonnet/moodle/my-olp.php",
+		"/Users/Anthony/dragonnet/moodle/mdeploy.php",
+		"/Users/Anthony/dragonnet/moodle/admin/settings/appearance.php",
+		"/Users/Anthony/dragonnet/moodle/admin/settings.php",
+		"/Users/Anthony/dragonnet/moodle/font-awesome/src/Makefile",
+		"/Users/Anthony/dragonnet/moodle/blocks/search/db/caches.php",
+		"/Users/Anthony/dragonnet/moodle/blocks/search/db/access.php",
+		"/Users/Anthony/dragonnet/moodle/lib/weblib.php",
+		"/Users/Anthony/dragonnet/moodle/lib/pagelib.php",
+		"/Users/Anthony/dragonnet/moodle/lib/outputcomponents.php",
+		"/Users/Anthony/dragonnet/moodle/cache/classes/loaders.php",
+		"/Users/Anthony/dragonnet/moodle/blocks/search/MoodleSearch/DisplayManager.php",
+		"/Users/Anthony/dragonnet/moodle/blocks/search/MoodleSearch/Model/Result.php",
+		"/Users/Anthony/dragonnet/moodle/blocks/search/MoodleSearch/DataManager.php",
+		"/Users/Anthony/dragonnet/moodle/blocks/search/block_search.php",
+		"/Users/Anthony/dragonnet/moodle/mod/wiki/pagelib.php",
+		"/Users/Anthony/dragonnet/moodle/backup/util/ui/restore_ui_components.php",
+		"/Users/Anthony/dragonnet/moodle/backup/cc/cc_lib/cc_weblink.php",
+		"/Users/Anthony/dragonnet/moodle/user/index.php",
+		"/Users/Anthony/dragonnet/moodle/comment/lib.php",
+		"/Users/Anthony/dragonnet/moodle/question/type/stack/doc/content/core.css",
+		"/Users/Anthony/dragonnet/moodle/mod/quiz/styles.css",
+		"/Users/Anthony/dragonnet/moodle/lib/yuilib/2in3/2.9.0/build/yui2-paginator/yui2-paginator-debug.js",
+		"/Users/Anthony/dragonnet/moodle/blocks/community/styles.css",
+		"/Users/Anthony/dragonnet/moodle/blocks/search/MoodleSearch/Model/Results/CategoryResult.php",
+		"/Users/Anthony/dragonnet/moodle/blocks/search/MoodleSearch/sort_array_multidim.php",
+		"/Users/Anthony/dragonnet/moodle/blocks/search/MoodleSearch/Model/Results/CourseResult.php",
+		"/Users/Anthony/dragonnet/moodle/blocks/search/MoodleSearch/Model/Results/FileInFolderResult.php",
+		"/Users/Anthony/dragonnet/moodle/admin/user.php",
+		"/Users/Anthony/dragonnet/moodle/draftfile.php",
+		"/Users/Anthony/dragonnet/moodle/lib/htmlpurifier/HTMLPurifier/DoctypeRegistry.php",
+		"/Users/Anthony/dragonnet/moodle/.gitignore",
+		"/Users/Anthony/dragonnet/moodle/mod/url/view.php",
+		"/Users/Anthony/dragonnet/moodle/mod/url/index.php",
+		"/Users/Anthony/dragonnet/moodle/blocks/search/MoodleSearch/Model/Results/ModuleResult.php",
+		"/Users/Anthony/dragonnet/moodle/lib/filelib.php",
+		"/Users/Anthony/dragonnet/moodle/mod/folder/renderer.php",
+		"/Users/Anthony/dragonnet/moodle/mod/folder/view.php",
+		"/Users/Anthony/dragonnet/moodle/lib/outputrenderers.php",
+		"/Users/Anthony/dragonnet/moodle/lib/accesslib.php",
+		"/Users/Anthony/dragonnet/moodle/config.php",
+		"/Users/Anthony/dragonnet/moodle/file.php",
+		"/Users/Anthony/dragonnet/moodle/pluginfile.php",
+		"/Users/Anthony/dragonnet/moodle/mod/resource/lib.php",
+		"/Users/Anthony/dragonnet/moodle/lib/filestorage/file_storage.php",
+		"/Users/Anthony/dragonnet/moodle/lib/xsendfilelib.php",
+		"/Users/Anthony/dragonnet/moodle/theme/decaf/layout/header-search-box.php",
+		"/Users/Anthony/dragonnet/moodle/mod/folder/lang/en/folder.php",
+		"/Users/Anthony/dragonnet/moodle/blocks/search/MoodleSearch/test.php",
+		"/Users/Anthony/dragonnet/moodle/mod/questionnaire/questions.php",
+		"/Users/Anthony/dragonnet/moodle/lib/editor/tinymce/lib.php",
+		"/Users/Anthony/dragonnet/moodle/lib/editor/tinymce/yui/build/moodle-editor_tinymce-collapse/moodle-editor_tinymce-collapse-min.js",
+		"/Users/Anthony/dragonnet/moodle/lib/editor/tinymce/yui/build/moodle-editor_tinymce-collapse/moodle-editor_tinymce-collapse-debug.js",
+		"/Users/Anthony/dragonnet/moodle/lib/editor/tinymce/yui/build/moodle-editor_tinymce-collapse/moodle-editor_tinymce-collapse.js",
+		"/Users/Anthony/dragonnet/moodle/lib/editor/tinymce/lang/en/editor_tinymce.php",
+		"/Users/Anthony/dragonnet/moodle/lib/editor/tinymce/plugins/spellchecker/lang/en/tinymce_spellchecker.php",
+		"/Users/Anthony/dragonnet/moodle/lib/editor/tinymce/plugins/moodlenolink/lang/en/tinymce_moodlenolink.php",
+		"/Users/Anthony/dragonnet/moodle/lib/editor/tinymce/plugins/moodlemedia/lang/en/tinymce_moodlemedia.php",
+		"/Users/Anthony/dragonnet/moodle/lib/editor/tinymce/plugins/moodleimage/lang/en/tinymce_moodleimage.php",
+		"/Users/Anthony/dragonnet/moodle/lib/editor/tinymce/plugins/moodleemoticon/lang/en/tinymce_moodleemoticon.php",
+		"/Users/Anthony/dragonnet/moodle/lib/editor/tinymce/plugins/dragmath/lang/en/tinymce_dragmath.php",
+		"/Users/Anthony/dragonnet/moodle/lib/editor/tinymce/plugins/ctrlhelp/lang/en/tinymce_ctrlhelp.php",
+		"/Users/Anthony/dragonnet/moodle/pix/t/TINY-ICONS",
+		"/Users/Anthony/dragonnet/moodle/tags.txt",
+		"/Users/Anthony/dragonnet/moodle/mod/questionnaire/lib.php",
+		"/Users/Anthony/dragonnet/moodle/mod/questionnaire/locallib.php",
+		"/Users/Anthony/dragonnet/moodle/course/lib.php",
+		"/Users/Anthony/dragonnet/moodle/mod/questionnaire/questions_form.php",
+		"/Users/Anthony/dragonnet/moodle/mod/questionnaire/complete.php",
+		"/Users/Anthony/dragonnet/moodle/mod/questionnaire/questionnaire.class.php",
+		"/Users/Anthony/dragonnet/moodle/mod/questionnaire/mod_form.php",
+		"/Users/Anthony/dragonnet/moodle/cache/stores/memcache/tests/test.php",
+		"/Users/Anthony/dragonnet/moodle/cache/stores/memcache/lib.php",
+		"/Users/Anthony/dragonnet/moodle/cache/stores/memcache/lang/en/cachestore_memcache.php",
+		"/Users/Anthony/dragonnet/moodle/lib/dml/mysqli_native_moodle_database.php",
+		"/Users/Anthony/dragonnet/moodle/lib/dml/pgsql_native_moodle_database.php",
+		"/Users/Anthony/dragonnet/moodle/cache/stores/memcache/addinstanceform.php",
+		"/Users/Anthony/dragonnet/moodle/cache/stores/memcache/settings.php",
+		"/Users/Anthony/dragonnet/moodle/mod/folder/db/install.xml",
+		"/Users/Anthony/dragonnet/moodle/cache/stores/memcache/tests/memcache_test.php",
+		"/Users/Anthony/dragonnet/moodle/lib/dml/oci_native_moodle_database.php",
+		"/Users/Anthony/dragonnet/moodle/lib/dml/mssql_native_moodle_database.php",
+		"/Users/Anthony/dragonnet/moodle/lib/dml/moodle_database.php",
+		"/Users/Anthony/dragonnet/moodle/lib/dml/sqlsrv_native_moodle_database.php",
+		"/Users/Anthony/dragonnet/moodle/lib/dml/pdo_moodle_database.php",
+		"/Users/Anthony/dragonnet/moodle/lib/adodb/adodb-pear.inc.php",
+		"/Users/Anthony/dragonnet/moodle/mod/folder/lib.php",
+		"/Users/Anthony/dragonnet/moodle/course/format/grid/module.js",
+		"/Users/Anthony/dragonnet/moodle/course/format/grid/format.js",
+		"/Users/Anthony/dragonnet/moodle/course/format/grid/renderer.php",
+		"/Users/Anthony/dragonnet/moodle/course/format/renderer.php",
+		"/Users/Anthony/dragonnet/moodle/course/format/grid/format.php"
+	],
+	"find":
+	{
+		"height": 24.0
+	},
+	"find_in_files":
+	{
+		"height": 95.0,
+		"where_history":
+		[
+			"*.*",
+			"/Users/Anthony/dragonnet/moodle/blocks/search",
+			"*.*",
+			"/Users/Anthony/dragonnet/moodle/mod/questionnaire",
+			"*.*"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"notifyEmail",
+			"removeCrud",
+			"post_deploy",
+			"post_deploy\n",
+			"post_deploy",
+			"_email",
+			"_log",
+			".sh",
+			"require_once",
+			"getFieldsToSearch",
+			"themesettings",
+			"themesetting",
+			"admin_setting_",
+			"admin_setting",
+			"h3",
+			"cache_results",
+			"paging",
+			"results",
+			"addTableInfoToResults",
+			"$this->results",
+			"convertRowsToResultObjectsAndAddToResults",
+			"filesInFolders",
+			"className",
+			"queryParameters",
+			"tableResults",
+			"removeHiddenResults",
+			"startTime",
+			"moduleFields",
+			"tablesToSearch",
+			"tableName",
+			"fieldName",
+			"FieldsToSearch",
+			"fieldsToSearch",
+			"refreshCache",
+			"courseid",
+			"courseID",
+			"courseid",
+			"courseID",
+			"searchBlock",
+			"removeHiddenResults",
+			"showHiddenResults",
+			"courseID",
+			"searchBlock",
+			"get_config",
+			"filterResults",
+			"filter",
+			"getResults",
+			"filter",
+			"var_dump",
+			"filterTime",
+			"has_capability",
+			"context",
+			"class file_storage",
+			"tableName(",
+			"getResourceSection",
+			"Result/",
+			"Result",
+			"();\n",
+			"getCategoryPath",
+			"removeFileInFolderResultIfHidden",
+			"print_",
+			"var_dump",
+			"();\n",
+			"modules",
+			"questionnaire_question_type",
+			"addqbutton",
+			"questionnairetypes",
+			"on",
+			"join",
+			"get_file_storage",
+			"jquery",
+			"print_single_section_page",
+			"testservers",
+			"struntestable",
+			"store_default_application",
+			"test",
+			"strsearchcourses",
+			"custo",
+			"enrol_self_enrol_form"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/Volumes/Macintosh HD/Dropbox/Websites/Packages/GitDeployer/src/GitDeployer.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7059,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2318,
+								2330
+							]
+						],
+						"settings":
+						{
+							"function_name_status_row": 66,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 974.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/Volumes/Macintosh HD/Dropbox/Websites/Packages/GitDeployer/git-pull.sh",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 546,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								231,
+								231
+							]
+						],
+						"settings":
+						{
+							"function_name_status_row": 22,
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/ShellScript/Shell-Unix-Generic.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 24.0
+	},
+	"input":
+	{
+		"height": 34.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.sftp":
+	{
+		"height": 0.0
+	},
+	"project": "GitDeployer.sublime-project",
+	"replace":
+	{
+		"height": 44.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"tinymce/lib",
+				"lib/editor/tinymce/lib.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"/Volumes/Macintosh HD/Dropbox/Websites/WhoDeletedMe/Who Deleted Me.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 375.0,
+		"selected_items":
+		[
+			[
+				"admin_setting_devicedetectregex",
+				"admin_setting_devicedetectregex"
+			],
+			[
+				"themesettings",
+				"theme_clean_get_html_for_settings"
+			],
+			[
+				"admin_get",
+				"admin_get_root"
+			],
+			[
+				"admin_setting_configmulticheckbox",
+				"admin_setting_configmulticheckbox2"
+			],
+			[
+				"",
+				".PHONY:"
+			],
+			[
+				"make_from",
+				"make_from_params"
+			],
+			[
+				"cache",
+				"Cache"
+			],
+			[
+				"make_from_",
+				"make_from_params"
+			],
+			[
+				"set_url",
+				"set_url"
+			],
+			[
+				"pagin",
+				"get_pagination"
+			],
+			[
+				"paging",
+				"pagingbar"
+			],
+			[
+				"showResults",
+				"showResults"
+			],
+			[
+				"filterREs",
+				"filterResults"
+			],
+			[
+				"filterResults",
+				"filterResults"
+			],
+			[
+				"context",
+				"context"
+			],
+			[
+				"context_module",
+				"context_module"
+			],
+			[
+				"pix_icon",
+				"pix_icon"
+			],
+			[
+				"xsendfile",
+				"xsendfile"
+			],
+			[
+				"xsendfil",
+				"xsendfile"
+			],
+			[
+				"get_file_storage",
+				"get_file_storage"
+			],
+			[
+				"resource_pluginfile",
+				"resource_pluginfile"
+			],
+			[
+				"olp",
+				"get_olp_courseid"
+			],
+			[
+				"get_records_sql",
+				"get_records_sql"
+			],
+			[
+				"folder_tree",
+				"folder_tree"
+			],
+			[
+				"display_folder",
+				"display_folder"
+			],
+			[
+				"admin_setting_configcheckbox",
+				"admin_setting_configcheckbox"
+			]
+		],
+		"width": 408.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 233.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

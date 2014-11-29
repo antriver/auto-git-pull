@@ -21,7 +21,7 @@ done
 shift $((OPTIND - 1))
 
 echo "cd $directory"
-cd $directory
+cd $directory || exit 1
 
 #Download changes from origin
 echo "git fetch $remote 2>&1"

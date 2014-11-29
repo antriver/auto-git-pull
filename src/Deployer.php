@@ -46,9 +46,11 @@
  *
 */
 
-namespace TMD\GitDeployer;
+namespace Tmd\AutoGitPull;
 
-class GitDeployer
+use Exception;
+
+class Deployer
 {
 
 	//User options
@@ -56,7 +58,7 @@ class GitDeployer
 	/**
 	* A callback function to call after the deploy has finished.
 	*
-	* @var callback
+	* @var closure
 	*/
 	public $postDeployCallback;
 
@@ -64,7 +66,7 @@ class GitDeployer
 	 * The name of the deploy script to run
 	 * @var string
 	 */
-	private $deployScript;
+	private $pullScriptPath;
 
 	/**
 	 * The username to run the deployment under
@@ -73,12 +75,17 @@ class GitDeployer
 	private $deployUser;
 
 	/**
-	* The name of the file that will be used for logging deployments. Set to
-	* FALSE to disable logging.  You need to create the deploy directory if it doesn't exist already.
-	* This is set automatically in __construct
+	* Directory to store logs in, with a trailing slash.
+	* Set to false to disable logging.
 	* @var string
 	*/
 	private $logDirectory = false;
+
+	/**
+	 * Log file name in the log directory.
+	 * Populated in the constructor.
+	 * @var string
+	 */
 	private $logFile = false;
 
 	/**
@@ -86,8 +93,8 @@ class GitDeployer
 	 * (PHP CLI is always allowed)
 	 *
 	 * Bitbucket IPs were found here:
-	 * https://confluence.atlassian.com/display/BITBUCKET/POST+hook+management
-	 * on Feb 18th 2014
+	 * https://confluence.atlassian.com/display/BITBUCKET/What+are+the+Bitbucket+IP+addresses+I+should+use+to+configure+my+corporate+firewall
+	 * on Feb 29th 2014
 	 *
 	 * @var array of IP addresses
 	 */
@@ -149,10 +156,8 @@ class GitDeployer
 	*/
 	public function __construct($options = array())
 	{
-		ini_set('display_errors', true);
-
 		$possibleOptions = array(
-			'deployScript',
+			'pullScriptPath',
 			'deployUser',
 			'directory',
 			'logDirectory',
@@ -168,16 +173,23 @@ class GitDeployer
 			}
 		}
 
+		// Set a log filename
 		if (!empty($this->logDirectory)) {
-			$this->logFile = $options['logDirectory'] . time() . '.log';
+			$this->logFile = $options['logDirectory'] . 'git-auto-deploy-' . time() . '.log';
 		}
 
-		//Should we send emails?
+		// Should we send emails?
 		$this->email = count($this->notifyEmails) > 0;
+
+		// Use the provided script by default
+		if (empty($this->pullScriptPath)) {
+			$this->pullScriptPath = dirname(__DIR__) . '/scripts/git-pull.sh';
+		}
 	}
 
 	/**
 	* Writes a message to the log file.
+	* TODO: Use Monolog
 	*
 	* @param  string  $message  The message to write
 	* @param  string  $type     The type of log message (e.g. INFO, DEBUG, ERROR, etc.)
@@ -206,7 +218,7 @@ class GitDeployer
 
 	private function logPostedData()
 	{
-		//Log POST data
+		// Log POST data
 		if (isset($_POST)) {
 
 			if (isset($_POST['payload'])) {
@@ -214,7 +226,6 @@ class GitDeployer
 			}
 
 			$this->log(print_r($_POST, true), 'POST');
-
 		}
 	}
 
@@ -238,17 +249,18 @@ class GitDeployer
 
 				if (!in_array($_SERVER['REMOTE_ADDR'], $this->allowedIPs)) {
 					header('HTTP/1.1 403 Forbidden');
-					throw new \Exception($_SERVER['REMOTE_ADDR'].' is not an authorised Remote IP Address');
+					throw new Exception($_SERVER['REMOTE_ADDR'].' is not an authorised Remote IP Address');
 				}
 
 			}
 
-			//Run the deploy script
+			// Run the deploy script
 
-			$script = $this->deployScript
+			$script = escapeshellarg($this->pullScriptPath)
 			. " -b {$this->branch}"
 			. " -d {$this->directory}"
 			. " -r {$this->remote}";
+
 
 			$cmd = "sudo -u {$this->deployUser} {$script} 2>&1";
 			echo "\n" . $cmd;
@@ -259,7 +271,7 @@ class GitDeployer
 			if ($return !== 0) {
 				echo (implode("\n", $output));
 				echo $return;
-				throw new \Exception("Error $return executing shell script");
+				throw new Exception("Error $return executing shell script");
 			} else {
 				$this->log("Running deploy shell script...\n" . implode("\n", $output));
 				unset ($output);
@@ -270,11 +282,11 @@ class GitDeployer
 				$callback();
 			}
 
-			//Log and email
+			// Log and email
 			$this->log('Deployment successful.');
 			$this->sendEmails('Deployment successful');
 
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			//Log and email
 			$this->log($e, 'ERROR');
 			$this->sendEmails('Deployment script failed');

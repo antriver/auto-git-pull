@@ -1,31 +1,22 @@
-This allows you to automatically deploy your changes into production when you push to a git repo. Install this package on your web server and add a 'hook' in your repo which notifies (runs) this script.
+AutoGitPull
+==============================
 
-There are two parts:
+This allows you to automatically pull your changes to your production when you push to a git repository.
+Install this package on your web server and add a 'hook' on GitHub/Bitbucket which notifies (runs) this script when changes are pushed.
+
+There are two important parts:
 * A PHP script which Bitbucket or Github will automatically send a request to when you push. (`http://your-site.com/deploy.php` in the examples below)
-* A shell script which does the actual pulling. The PHP script calls this script. (`/sites/whodel/deployer/git-pull.sh` in the examples below)
+* A shell script which does the actual pulling. (`git-pull.sh` in the examples below)
 
-The reason for the separation is so you don't need to grant the web user write permission to your files. You juse need to allow it permission to run the one script as a user that does have write permission.
+The reason for the separation is so you don't need to grant the web user write permission to your files. You just need to allow it to run the one script as a user that does have write permission.
 
-## Installation
+Setup
+-----
 
-* Install using composer
-
-```json
-{
-	"repositories": [
-		{
-			"type": "git",
-			"url":  "https://github.com/antriver/GitDeployer"
-		}
-	],
-	"require": {
-		"tmd/gitdeployer": "dev-master"
-	}
-}
+Install the latest version with `composer require tmd/auto-git-pull`
 
 ```
-
-* Copy the `usage.php` script to a publicly accessible location on your server (e.g. `http://your-site.com/deploy.php`) and edit the settings as appropriate.
+* Create a publicy accessible file which will be called by GitHub/Bitbucket and run the deployment (e.g. `http://your-site.com/deploy.php`) and edit the settings as appropriate. See `deploy.example.php` for an example.
 
 * Allow the user to run the pull script as a user with write permissions:
 
@@ -72,8 +63,4 @@ git remote set-url origin git@bitbucket.org:antriver/who-deleted-me.git
 * Add the hook on Bitbucket:
 
 ![Add bitbucket deploy hook](http://img.ctrlv.in/img/53038a61539f9.png)
-
-=============
-
-Hopefully these quick and dirty instructions get your started. If not, contact me at http://www.anthonykuske.com and I'll be happy to help.
 
