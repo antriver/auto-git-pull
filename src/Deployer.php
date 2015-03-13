@@ -354,7 +354,7 @@ class Deployer
     }
 
     private function isIpPermitted($ip) {
-        foreach ($yjis->allowedIpRanges as $range) {
+        foreach ($this->allowedIpRanges as $range) {
             if ($this->isIpInRange($ip, $range)) {
                 return true;
             }
