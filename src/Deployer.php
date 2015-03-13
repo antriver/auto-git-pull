@@ -33,11 +33,6 @@
  * TODO: Check which branch was pushed to (currently it pulls no
  * matter what branch was pushed to)
  *
- * Deployment script to be run from bitbucket.  This script runs a shell
- * script on the server to do deployment.    It should also run from github
- * with a change to the $_repositoryIp setting, and any other repository
- * that can call a URL on commit.
- *
  * Based on deployment script by Iain Gray igray@itgassociates.com
  * https://bitbucket.org/itjgray/bitbucket-php-deploy.git
  *
@@ -98,10 +93,11 @@ class Deployer
 	 *
 	 * @var array of IP addresses
 	 */
-	private $allowedIPs = array(
-		'131.103.20.165', //Bitbucket
-		'131.103.20.166', //Bitbucket
-	);
+    private $allowedIpRanges = array(
+        '131.103.20.165/32', // Bitbucket
+        '131.103.20.166/32', // Bitbucket
+        '192.30.252.0/22', // Github
+    );
 
 	/**
 	* The timestamp format used for logging.
@@ -278,7 +274,7 @@ class Deployer
 				$this->logHeaders();
 				$this->logPostedData();
 
-				if (!in_array($ip, $this->allowedIPs)) {
+                if (!$this->isIpPermitted($ip)) {
 					header('HTTP/1.1 403 Forbidden');
 					throw new Exception($ip.' is not an authorised Remote IP Address');
 				}
@@ -337,4 +333,32 @@ class Deployer
 			mail($email, $subject, $message);
 		}
 	}
+
+    /**
+     * Source: https://gist.github.com/jonavon/2028872
+     * @param  [string]  $ip
+     * @param  [string]  $range
+     * @return boolean
+     */
+    private function isIpInRange($ip, $range) {
+        if (strpos( $range, '/' ) == false) {
+            $range .= '/32';
+        }
+        // $range is in IP/CIDR format eg 127.0.0.1/24
+        list( $range, $netmask ) = explode( '/', $range, 2 );
+        $range_decimal = ip2long( $range );
+        $ip_decimal = ip2long( $ip );
+        $wildcard_decimal = pow( 2, ( 32 - $netmask ) ) - 1;
+        $netmask_decimal = ~ $wildcard_decimal;
+        return ( ( $ip_decimal & $netmask_decimal ) == ( $range_decimal & $netmask_decimal ) );
+    }
+
+    private function isIpPermitted($ip) {
+        foreach ($yjis->allowedIpRanges as $range) {
+            if ($this->isIpInRange($ip, $range)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
