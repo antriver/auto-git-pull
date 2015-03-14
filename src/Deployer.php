@@ -246,13 +246,15 @@ class Deployer
 
 		if (!empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
 			$ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
-		}
-		if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+		} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-		}
-		if (!empty($_SERVER['REMOTE_ADDR'])) {
+		} elseif (!empty($_SERVER['REMOTE_ADDR'])) {
 			$ip = $_SERVER['REMOTE_ADDR'];
 		}
+
+        if (!$ip) {
+            return null;
+        }
 
         // If there are multiple proxies, X_FORWARDED_FOR is a comma and space separated list of IPs
         $ip = explode(', ', $ip);
