@@ -242,16 +242,22 @@ class Deployer
 
 	protected function getIp()
 	{
+        $ip = null;
+
 		if (!empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
-			return $_SERVER['HTTP_CF_CONNECTING_IP'];
+			$ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
 		}
 		if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-			return $_SERVER['HTTP_X_FORWARDED_FOR'];
+			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
 		}
 		if (!empty($_SERVER['REMOTE_ADDR'])) {
-			return $_SERVER['REMOTE_ADDR'];
+			$ip = $_SERVER['REMOTE_ADDR'];
 		}
-		return null;
+
+        // If there are multiple proxies, X_FORWARDED_FOR is a comma and space separated list of IPs
+        $ip = explode(', ', $ip);
+
+		return $ip[0];
 	}
 
 	/**
