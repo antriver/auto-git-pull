@@ -1,14 +1,14 @@
 {
-	"name": "tmd/auto-git-pull",
-	"description": "Automatically pulls a git repository when commits are pushed.",
-	"license": "MIT",
-	"authors": [
-		{
-			"name": "Anthony Kuske",
-			"homepage": "http://www.anthonykuske.com"
-		}
-	],
-	"autoload": {
+    "name": "tmd/auto-git-pull",
+    "description": "Automatically pulls a git repository when commits are pushed.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Anthony Kuske",
+            "homepage": "http://www.anthonykuske.com"
+        }
+    ],
+    "autoload": {
         "psr-4": {
             "Tmd\\AutoGitPull\\": "src/"
         }

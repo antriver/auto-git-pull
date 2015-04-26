@@ -48,209 +48,209 @@ use Exception;
 class Deployer
 {
 
-	//User options
+    //User options
 
-	/**
-	* A callback function to call after the deploy has finished.
-	*
-	* @var closure
-	*/
-	public $postDeployCallback;
+    /**
+    * A callback function to call after the deploy has finished.
+    *
+    * @var closure
+    */
+    public $postDeployCallback;
 
-	/**
-	 * The name of the deploy script to run
-	 * @var string
-	 */
-	private $pullScriptPath;
+    /**
+     * The name of the deploy script to run
+     * @var string
+     */
+    private $pullScriptPath;
 
-	/**
-	 * The username to run the deployment under
-	 * @var string
-	 */
-	private $deployUser;
+    /**
+     * The username to run the deployment under
+     * @var string
+     */
+    private $deployUser;
 
-	/**
-	* Directory to store logs in, with a trailing slash.
-	* Set to false to disable logging.
-	* @var string
-	*/
-	private $logDirectory = false;
+    /**
+    * Directory to store logs in, with a trailing slash.
+    * Set to false to disable logging.
+    * @var string
+    */
+    private $logDirectory = false;
 
-	/**
-	 * Log file name in the log directory.
-	 * Populated in the constructor.
-	 * @var string
-	 */
-	private $logFile = false;
+    /**
+     * Log file name in the log directory.
+     * Populated in the constructor.
+     * @var string
+     */
+    private $logFile = false;
 
-	/**
-	 * Which IPs can trigger the deployment?
-	 * (PHP CLI is always allowed)
-	 *
-	 * Bitbucket IPs were found here:
-	 * https://confluence.atlassian.com/display/BITBUCKET/What+are+the+Bitbucket+IP+addresses+I+should+use+to+configure+my+corporate+firewall
-	 * on Feb 29th 2014
-	 *
-	 * @var array of IP addresses
-	 */
+    /**
+     * Which IPs can trigger the deployment?
+     * (PHP CLI is always allowed)
+     *
+     * Bitbucket IPs were found here:
+     * https://confluence.atlassian.com/display/BITBUCKET/What+are+the+Bitbucket+IP+addresses+I+should+use+to+configure+my+corporate+firewall
+     * on Feb 29th 2014
+     *
+     * @var array of IP addresses
+     */
     private $allowedIpRanges = array(
         '131.103.20.165/32', // Bitbucket
         '131.103.20.166/32', // Bitbucket
         '192.30.252.0/22', // Github
     );
 
-	/**
-	* The timestamp format used for logging.
-	*
-	* @link    http://www.php.net/manual/en/function.date.php
-	* @var     string
-	*/
-	private $dateFormat = 'Y-m-d H:i:s';
+    /**
+    * The timestamp format used for logging.
+    *
+    * @link    http://www.php.net/manual/en/function.date.php
+    * @var     string
+    */
+    private $dateFormat = 'Y-m-d H:i:s';
 
-	/**
-	 * Email addresses to send results to
-	 * @var string
-	 */
-	private $notifyEmails = array();
+    /**
+     * Email addresses to send results to
+     * @var string
+     */
+    private $notifyEmails = array();
 
-	/**
-	 * Directory to pull in
-	 * @var string
-	 */
-	private $directory;
+    /**
+     * Directory to pull in
+     * @var string
+     */
+    private $directory;
 
-	/**
-	 * Git branch to pull
-	 * @var string
-	 */
-	private $branch = 'master';
+    /**
+     * Git branch to pull
+     * @var string
+     */
+    private $branch = 'master';
 
-	/**
-	 * Git remote to pull form
-	 * @var string
-	 */
-	private $remote = 'origin';
+    /**
+     * Git remote to pull form
+     * @var string
+     */
+    private $remote = 'origin';
 
-	//End of user options
+    //End of user options
 
-	/**
-	 * Are we going to send email notifications?
-	 * @var boolean
-	 */
-	private $email = false;
+    /**
+     * Are we going to send email notifications?
+     * @var boolean
+     */
+    private $email = false;
 
-	/**
-	 * Holds messages that have been written to the log so we can email them at the end as well.
-	 * @var array
-	 */
-	private $logBuffer = array();
+    /**
+     * Holds messages that have been written to the log so we can email them at the end as well.
+     * @var array
+     */
+    private $logBuffer = array();
 
-	/**
-	* Create instance
-	*
-	* @param  array   $options 	Array of options to set or override
-	*/
-	public function __construct($options = array())
-	{
-		$possibleOptions = array(
-			'pullScriptPath',
-			'deployUser',
-			'directory',
-			'logDirectory',
-			'branch',
-			'dateFormat',
-			'notifyEmails',
-			'allowedIPs'
-		);
+    /**
+    * Create instance
+    *
+    * @param  array   $options  Array of options to set or override
+    */
+    public function __construct($options = array())
+    {
+        $possibleOptions = array(
+            'pullScriptPath',
+            'deployUser',
+            'directory',
+            'logDirectory',
+            'branch',
+            'dateFormat',
+            'notifyEmails',
+            'allowedIPs'
+        );
 
-		foreach ($options as $option => $value) {
-			if (in_array($option, $possibleOptions)) {
-				$this->{$option} = $value;
-			}
-		}
+        foreach ($options as $option => $value) {
+            if (in_array($option, $possibleOptions)) {
+                $this->{$option} = $value;
+            }
+        }
 
-		// Set a log filename
-		if (!empty($this->logDirectory)) {
-			$this->logFile = $options['logDirectory'] . 'auto-git-pull-' . time() . '.log';
-		}
+        // Set a log filename
+        if (!empty($this->logDirectory)) {
+            $this->logFile = $options['logDirectory'] . 'auto-git-pull-' . time() . '.log';
+        }
 
-		// Should we send emails?
-		$this->email = count($this->notifyEmails) > 0;
+        // Should we send emails?
+        $this->email = count($this->notifyEmails) > 0;
 
-		// Use the provided script by default
-		if (empty($this->pullScriptPath)) {
-			$this->pullScriptPath = dirname(__DIR__) . '/scripts/git-pull.sh';
-		}
-	}
+        // Use the provided script by default
+        if (empty($this->pullScriptPath)) {
+            $this->pullScriptPath = dirname(__DIR__) . '/scripts/git-pull.sh';
+        }
+    }
 
-	/**
-	* Writes a message to the log file.
-	* TODO: Use Monolog
-	*
-	* @param  string  $message  The message to write
-	* @param  string  $type     The type of log message (e.g. INFO, DEBUG, ERROR, etc.)
-	*/
-	public function log($message, $type = 'INFO')
-	{
-		$line = "[" . date($this->dateFormat) . "]\t{$type}\t{$message}" . PHP_EOL;
+    /**
+    * Writes a message to the log file.
+    * TODO: Use Monolog
+    *
+    * @param  string  $message  The message to write
+    * @param  string  $type     The type of log message (e.g. INFO, DEBUG, ERROR, etc.)
+    */
+    public function log($message, $type = 'INFO')
+    {
+        $line = "[" . date($this->dateFormat) . "]\t{$type}\t{$message}" . PHP_EOL;
 
-		if ($this->logFile) {
-			if (!file_exists($this->logFile)) {
-			   // Create the log file
-				file_put_contents($this->logFile, '');
+        if ($this->logFile) {
+            if (!file_exists($this->logFile)) {
+               // Create the log file
+                file_put_contents($this->logFile, '');
 
-				// Allow anyone to write to log files
-				chmod($this->logFile, 0666);
-			}
+                // Allow anyone to write to log files
+                chmod($this->logFile, 0666);
+            }
 
-			// Write the message into the log file
-			file_put_contents($this->logFile, $line, FILE_APPEND);
-		}
+            // Write the message into the log file
+            file_put_contents($this->logFile, $line, FILE_APPEND);
+        }
 
-		if ($this->email) {
-			$this->logBuffer[] = $line;
-		}
-	}
+        if ($this->email) {
+            $this->logBuffer[] = $line;
+        }
+    }
 
-	private function logHeaders()
-	{
-		if (empty($_SERVER)) {
-			return false;
-		}
-		$headers = [];
-		foreach ($_SERVER as $name => $value)
-		{
-			if (substr($name, 0, 5) == 'HTTP_') {
-				$headers[$name] = $value;
-			}
-		}
-		$this->log(print_r($headers, true), 'INFO');
-	}
+    private function logHeaders()
+    {
+        if (empty($_SERVER)) {
+            return false;
+        }
+        $headers = [];
+        foreach ($_SERVER as $name => $value)
+        {
+            if (substr($name, 0, 5) == 'HTTP_') {
+                $headers[$name] = $value;
+            }
+        }
+        $this->log(print_r($headers, true), 'INFO');
+    }
 
-	private function logPostedData()
-	{
-		// Log POST data
-		if (isset($_POST)) {
+    private function logPostedData()
+    {
+        // Log POST data
+        if (isset($_POST)) {
 
-			if (isset($_POST['payload'])) {
-				$_POST['payload'] = json_decode($_POST['payload']);
-			}
+            if (isset($_POST['payload'])) {
+                $_POST['payload'] = json_decode($_POST['payload']);
+            }
 
-			$this->log(print_r($_POST, true), 'POST');
-		}
-	}
+            $this->log(print_r($_POST, true), 'POST');
+        }
+    }
 
-	protected function getIp()
-	{
+    protected function getIp()
+    {
         $ip = null;
 
-		if (!empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
-			$ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
-		} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-		} elseif (!empty($_SERVER['REMOTE_ADDR'])) {
-			$ip = $_SERVER['REMOTE_ADDR'];
-		}
+        if (!empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+            $ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
 
         if (!$ip) {
             return null;
@@ -259,88 +259,88 @@ class Deployer
         // If there are multiple proxies, X_FORWARDED_FOR is a comma and space separated list of IPs
         $ip = explode(', ', $ip);
 
-		return $ip[0];
-	}
+        return $ip[0];
+    }
 
-	/**
-	* Executes the necessary commands to deploy the website.
-	*/
-	public function deploy()
-	{
-		try {
+    /**
+    * Executes the necessary commands to deploy the website.
+    */
+    public function deploy()
+    {
+        try {
 
-			$this->log('Attempting deployment...');
+            $this->log('Attempting deployment...');
 
-			if (php_sapi_name() === 'cli') {
+            if (php_sapi_name() === 'cli') {
 
-				$this->log("Running from PHP CLI");
+                $this->log("Running from PHP CLI");
 
-			} else {
+            } else {
 
-				$ip = $this->getIp();
-				$this->log("IP is {$ip}");
-				$this->logHeaders();
-				$this->logPostedData();
+                $ip = $this->getIp();
+                $this->log("IP is {$ip}");
+                $this->logHeaders();
+                $this->logPostedData();
 
                 if (!$this->isIpPermitted($ip)) {
-					header('HTTP/1.1 403 Forbidden');
-					throw new Exception($ip.' is not an authorised Remote IP Address');
-				}
+                    header('HTTP/1.1 403 Forbidden');
+                    throw new Exception($ip.' is not an authorised Remote IP Address');
+                }
 
-			}
+            }
 
-			// Run the deploy script
+            // Run the deploy script
 
-			$script = escapeshellarg($this->pullScriptPath)
-			. " -b {$this->branch}"
-			. " -d {$this->directory}"
-			. " -r {$this->remote}";
+            $script = escapeshellarg($this->pullScriptPath)
+            . " -b {$this->branch}"
+            . " -d {$this->directory}"
+            . " -r {$this->remote}";
 
 
-			$cmd = "{$script} 2>&1";
+            $cmd = "{$script} 2>&1";
 
-			if (!empty($this->deployUser)) {
-				$cmd = "sudo -u {$this->deployUser} {$cmd}";
-			}
+            if (!empty($this->deployUser)) {
+                $cmd = "sudo -u {$this->deployUser} {$cmd}";
+            }
 
-			echo "\n" . $cmd;
+            echo "\n" . $cmd;
 
-			$this->log($cmd);
-			exec($cmd, $output, $return);
+            $this->log($cmd);
+            exec($cmd, $output, $return);
 
-			if ($return !== 0) {
-				echo (implode("\n", $output));
-				echo $return;
-				throw new Exception("Error $return executing shell script");
-			} else {
-				$this->log("Running deploy shell script...\n" . implode("\n", $output));
-				unset ($output);
-			}
+            if ($return !== 0) {
+                echo (implode("\n", $output));
+                echo $return;
+                throw new Exception("Error $return executing shell script");
+            } else {
+                $this->log("Running deploy shell script...\n" . implode("\n", $output));
+                unset ($output);
+            }
 
-			if (!empty($this->postDeployCallback)) {
-				$callback = $this->postDeployCallback;
-				$callback();
-			}
+            if (!empty($this->postDeployCallback)) {
+                $callback = $this->postDeployCallback;
+                $callback();
+            }
 
-			// Log and email
-			$this->log('Deployment successful.');
-			$this->sendEmails('Deployment successful');
+            // Log and email
+            $this->log('Deployment successful.');
+            $this->sendEmails('Deployment successful');
 
-		} catch (Exception $e) {
-			//Log and email
-			$this->log($e, 'ERROR');
-			$this->sendEmails('Deployment script failed');
-		}
-	}
+        } catch (Exception $e) {
+            //Log and email
+            $this->log($e, 'ERROR');
+            $this->sendEmails('Deployment script failed');
+        }
+    }
 
-	private function sendEmails($subject)
-	{
-		$message = implode('', $this->logBuffer);
+    private function sendEmails($subject)
+    {
+        $message = implode('', $this->logBuffer);
 
-		foreach ($this->notifyEmails as $email) {
-			mail($email, $subject, $message);
-		}
-	}
+        foreach ($this->notifyEmails as $email) {
+            mail($email, $subject, $message);
+        }
+    }
 
     /**
      * Source: https://gist.github.com/jonavon/2028872
