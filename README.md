@@ -1,4 +1,4 @@
-AutoGitPull
+Auto 'git pull'
 ==============================
 
 Automatically run a `git pull` when changes are pushed to a Git repository.
