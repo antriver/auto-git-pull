@@ -8,7 +8,7 @@ About
 
 There are two important parts:
 * A PHP script which Bitbucket or Github will automatically send a request to when you push. (`http://mysite/deploy.php` in the examples below)
-* A shell script which does the actual pulling. (`scripts/git-pull.sh`)
+* A shell script which does the actual pulling. ([`scripts/git-pull.sh`](scripts/git-pull.sh))
 
 The reason for the separation is so you don't need to grant the web user write permission to your files. You just need to allow it to run the one script as a user that does have write permission.
 
@@ -24,7 +24,7 @@ Setup
 chmod +x vendor/tmd/auto-git-pull/scripts/git-pull.sh
 ```
 
-* Create a publicy accessible URL on your site which will be called by Github/Bitbucket and run the deployment (e.g. `http://mysite.com/deploy.php`) and set the parameters as appropriate. See `deploy.example.php` for an example.
+* Create a publicy accessible URL on your site which will be called by Github/Bitbucket and run the deployment (e.g. `http://mysite.com/deploy.php`) and set the parameters as appropriate. See [`deploy.example.php`](deploy.example.php) for an example.
 
 Example in Laravel:
 ```php
