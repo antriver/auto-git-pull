@@ -94,8 +94,9 @@ class Deployer
      * @var array of IP addresses
      */
     private $allowedIpRanges = array(
-        '131.103.20.165/32', // Bitbucket
-        '131.103.20.166/32', // Bitbucket
+        '131.103.20.160/27', // Bitbucket
+        '165.254.145.0/26', // Bitbucket
+        '104.192.143.0/24', // Bitbucket
         '192.30.252.0/22', // Github
     );
 
@@ -160,13 +161,17 @@ class Deployer
             'branch',
             'dateFormat',
             'notifyEmails',
-            'allowedIPs'
+            'allowedIpRanges'
         );
 
         foreach ($options as $option => $value) {
             if (in_array($option, $possibleOptions)) {
                 $this->{$option} = $value;
             }
+        }
+
+        if (isset($options['additionalAllowedIpRanges'])) {
+            $this->allowedIpRanges = array_merge($this->allowedIpRanges, $options['additionalAllowedIpRanges']);
         }
 
         // Set a log filename
