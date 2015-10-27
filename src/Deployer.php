@@ -1,26 +1,26 @@
 <?php
 /**
  * The MIT License (MIT)
- * Copyright (c) 2014 Anthony Kuske <www.anthonykuske.com>
+ * Copyright (c) 2015 Anthony Kuske <www.anthonykuske.com>
  *
-* Permission is hereby granted, free of charge, to any person obtaining a copy
-* of this software and associated documentation files (the "Software"), to deal
-* in the Software without restriction, including without limitation the rights
-* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-* copies of the Software, and to permit persons to whom the Software is
-* furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included in all
-* copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-* SOFTWARE.
-*/
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 
 /**
  * Automatic git deployment
@@ -39,129 +39,102 @@
  * Based on deployment script by Brandon Summers
  * http://brandonsummers.name/blog/2012/02/10/using-bitbucket-for-automated-deployments/
  *
-*/
+ */
 
 namespace Tmd\AutoGitPull;
 
+use Closure;
 use Exception;
+use Monolog\Logger;
 
 class Deployer
 {
-
-    //User options
-
-    /**
-    * A callback function to call after the deploy has finished.
-    *
-    * @var closure
-    */
-    public $postDeployCallback;
-
-    /**
-     * The name of the deploy script to run
-     * @var string
-     */
-    private $pullScriptPath;
-
-    /**
-     * The username to run the deployment under
-     * @var string
-     */
-    private $deployUser;
-
-    /**
-    * Directory to store logs in, with a trailing slash.
-    * Set to false to disable logging.
-    * @var string
-    */
-    private $logDirectory = false;
-
-    /**
-     * Log file name in the log directory.
-     * Populated in the constructor.
-     * @var string
-     */
-    private $logFile = false;
+    // User options...
 
     /**
      * Which IPs can trigger the deployment?
      * (PHP CLI is always allowed)
      *
-     * Bitbucket IPs were found here:
-     * https://confluence.atlassian.com/display/BITBUCKET/What+are+the+Bitbucket+IP+addresses+I+should+use+to+configure+my+corporate+firewall
+     * Bitbucket IPs were found here on Oct 26th 2015:
+     * https://confluence.atlassian.com/bitbucket/manage-webhooks-735643732.html
      * on Feb 29th 2014
      *
-     * @var array of IP addresses
+     * GitHub IPs where found here on Oct 26th 2015:
+     * https://help.github.com/articles/what-ip-addresses-does-github-use-that-i-should-whitelist/
+     *
+     * @var array
      */
-    private $allowedIpRanges = array(
+    public $allowedIpRanges = array(
         '131.103.20.160/27', // Bitbucket
         '165.254.145.0/26', // Bitbucket
         '104.192.143.0/24', // Bitbucket
-        '192.30.252.0/22', // Github
+        '192.30.252.0/22', // GitHub
     );
 
     /**
-    * The timestamp format used for logging.
-    *
-    * @link    http://www.php.net/manual/en/function.date.php
-    * @var     string
-    */
-    private $dateFormat = 'Y-m-d H:i:s';
-
-    /**
-     * Email addresses to send results to
+     * Git branch to pull
+     *
      * @var string
      */
-    private $notifyEmails = array();
+    public $branch = 'master';
+
+    /**
+     * The username to run the deployment under
+     *
+     * @var string
+     */
+    public $deployUser;
 
     /**
      * Directory to pull in
+     *
      * @var string
      */
-    private $directory;
+    public $directory;
 
     /**
-     * Git branch to pull
+     * A callback function to call after the deploy has finished.
+     *
+     * @var Closure
+     */
+    public $postDeployCallback;
+
+    /**
+     * The name of the deploy script to run
+     *
      * @var string
      */
-    private $branch = 'master';
+    public $pullScriptPath;
 
     /**
      * Git remote to pull form
+     *
      * @var string
      */
-    private $remote = 'origin';
-
-    //End of user options
+    public $remote = 'origin';
 
     /**
-     * Are we going to send email notifications?
-     * @var boolean
+     * Monolog instance for logging.
+     *
+     * @var Logger
      */
-    private $email = false;
+    private $logger;
 
     /**
-     * Holds messages that have been written to the log so we can email them at the end as well.
-     * @var array
+     * Create instance
+     *
+     * @param array $options Array of options to set or override
+     *
+     * @throws Exception
      */
-    private $logBuffer = array();
-
-    /**
-    * Create instance
-    *
-    * @param  array   $options  Array of options to set or override
-    */
     public function __construct($options = array())
     {
         $possibleOptions = array(
+            'allowedIpRanges',
+            'branch',
+            'directory',
             'pullScriptPath',
             'deployUser',
-            'directory',
-            'logDirectory',
-            'branch',
-            'dateFormat',
-            'notifyEmails',
-            'allowedIpRanges'
         );
 
         foreach ($options as $option => $value) {
@@ -170,17 +143,14 @@ class Deployer
             }
         }
 
+        if (empty($this->directory)) {
+            throw new Exception("A directory must be supplied");
+        }
+
+
         if (isset($options['additionalAllowedIpRanges'])) {
             $this->allowedIpRanges = array_merge($this->allowedIpRanges, $options['additionalAllowedIpRanges']);
         }
-
-        // Set a log filename
-        if (!empty($this->logDirectory)) {
-            $this->logFile = $options['logDirectory'] . 'auto-git-pull-' . time() . '.log';
-        }
-
-        // Should we send emails?
-        $this->email = count($this->notifyEmails) > 0;
 
         // Use the provided script by default
         if (empty($this->pullScriptPath)) {
@@ -189,62 +159,74 @@ class Deployer
     }
 
     /**
-    * Writes a message to the log file.
-    * TODO: Use Monolog
-    *
-    * @param  string  $message  The message to write
-    * @param  string  $type     The type of log message (e.g. INFO, DEBUG, ERROR, etc.)
-    */
-    public function log($message, $type = 'INFO')
+     * Set a Monolog instance to use for logging
+     *
+     * @param Logger $logger
+     */
+    public function setLogger(Logger $logger)
     {
-        $line = "[" . date($this->dateFormat) . "]\t{$type}\t{$message}" . PHP_EOL;
+        $this->logger = $logger;
+    }
 
-        if ($this->logFile) {
-            if (!file_exists($this->logFile)) {
-               // Create the log file
-                file_put_contents($this->logFile, '');
-
-                // Allow anyone to write to log files
-                chmod($this->logFile, 0666);
-            }
-
-            // Write the message into the log file
-            file_put_contents($this->logFile, $line, FILE_APPEND);
-        }
-
-        if ($this->email) {
-            $this->logBuffer[] = $line;
+    /**
+     * Sends a message to Monolog.
+     *
+     * @param string $message The message to write
+     * @param int $level One of the levels defined by Monolog (e.g. INFO, DEBUG, ERROR, etc.)
+     * @param array $context
+     */
+    private function log($message, $level = Logger::DEBUG, $context = array())
+    {
+        if ($this->logger instanceof Logger) {
+            $this->logger->log($level, $message, $context);
         }
     }
 
+    /**
+     * Write all the HTTP values from $_SERVER to the log file.
+     *
+     * @return bool
+     */
     private function logHeaders()
     {
         if (empty($_SERVER)) {
             return false;
         }
         $headers = [];
-        foreach ($_SERVER as $name => $value)
-        {
+        foreach ($_SERVER as $name => $value) {
             if (substr($name, 0, 5) == 'HTTP_') {
                 $headers[$name] = $value;
             }
         }
-        $this->log(print_r($headers, true), 'INFO');
+        $this->log('HTTP Headers', Logger::DEBUG, $headers);
+        return true;
     }
 
+    /**
+     * Write all the input from $_POST to the log file.
+     *
+     * @return bool
+     */
     private function logPostedData()
     {
-        // Log POST data
-        if (isset($_POST)) {
-
-            if (isset($_POST['payload'])) {
-                $_POST['payload'] = json_decode($_POST['payload']);
-            }
-
-            $this->log(print_r($_POST, true), 'POST');
+        if (empty($_POST)) {
+            return false;
         }
+
+        if (isset($_POST['payload'])) {
+            $_POST['payload'] = json_decode($_POST['payload']);
+        }
+
+        $this->log('POST Data', Logger::DEBUG, $_POST);
+        return true;
     }
 
+    /**
+     * Return the IP the request is from.
+     * (Might be from a proxy or via CloudFlare
+     *
+     * @return string|null
+     */
     protected function getIp()
     {
         $ip = null;
@@ -264,109 +246,101 @@ class Deployer
         // If there are multiple proxies, X_FORWARDED_FOR is a comma and space separated list of IPs
         $ip = explode(', ', $ip);
 
+        // Use the first IP
         return $ip[0];
     }
 
     /**
-    * Executes the necessary commands to deploy the website.
-    */
+     * Executes the necessary commands to do the pull.
+     *
+     * @throws Exception
+     */
     public function deploy()
     {
-        try {
+        $this->log('Attempting deployment...');
 
-            $this->log('Attempting deployment...');
+        if (php_sapi_name() === 'cli') {
+            $this->log("Running from PHP CLI");
+        } else {
+            $ip = $this->getIp();
+            $this->log("IP is {$ip}");
+            $this->logHeaders();
+            $this->logPostedData();
 
-            if (php_sapi_name() === 'cli') {
+            if (!$this->isIpPermitted($ip)) {
+                $this->log($ip . ' is not an authorised Remote IP Address', Logger::WARNING);
 
-                $this->log("Running from PHP CLI");
-
-            } else {
-
-                $ip = $this->getIp();
-                $this->log("IP is {$ip}");
-                $this->logHeaders();
-                $this->logPostedData();
-
-                if (!$this->isIpPermitted($ip)) {
-                    header('HTTP/1.1 403 Forbidden');
-                    throw new Exception($ip.' is not an authorised Remote IP Address');
-                }
-
+                header('HTTP/1.1 403 Forbidden');
+                throw new Exception($ip . ' is not an authorised Remote IP Address');
             }
+        }
 
-            // Run the deploy script
+        // Run the deploy script
 
-            $script = escapeshellarg($this->pullScriptPath)
+        $script = escapeshellarg($this->pullScriptPath)
             . " -b {$this->branch}"
-            . " -d {$this->directory}"
+            . " -d " . escapeshellarg($this->directory)
             . " -r {$this->remote}";
 
+        $cmd = "{$script} 2>&1";
 
-            $cmd = "{$script} 2>&1";
+        if (!empty($this->deployUser)) {
+            $cmd = "sudo -u {$this->deployUser} {$cmd}";
+        }
 
-            if (!empty($this->deployUser)) {
-                $cmd = "sudo -u {$this->deployUser} {$cmd}";
-            }
+        $this->log($cmd, Logger::DEBUG);
 
-            echo "\n" . $cmd;
+        $output = [];
+        exec($cmd, $output, $return);
 
-            $this->log($cmd);
-            exec($cmd, $output, $return);
+        $this->log("Output from script", Logger::DEBUG, $output);
 
-            if ($return !== 0) {
-                echo (implode("\n", $output));
-                echo $return;
-                throw new Exception("Error $return executing shell script");
-            } else {
-                $this->log("Running deploy shell script...\n" . implode("\n", $output));
-                unset ($output);
-            }
+        if ($return !== 0) {
+            $this->log("Deploy script exited with code $return", Logger::ERROR);
+            throw new Exception("Deploy script exited with code $return");
+        }
 
-            if (!empty($this->postDeployCallback)) {
-                $callback = $this->postDeployCallback;
-                $callback();
-            }
+        $this->log('Deployment successful.', Logger::NOTICE);
 
-            // Log and email
-            $this->log('Deployment successful.');
-            $this->sendEmails('Deployment successful');
-
-        } catch (Exception $e) {
-            //Log and email
-            $this->log($e, 'ERROR');
-            $this->sendEmails('Deployment script failed');
+        if (!empty($this->postDeployCallback)) {
+            $callback = $this->postDeployCallback;
+            $callback();
         }
     }
 
-    private function sendEmails($subject)
-    {
-        $message = implode('', $this->logBuffer);
-
-        foreach ($this->notifyEmails as $email) {
-            mail($email, $subject, $message);
-        }
-    }
 
     /**
+     * Check if an IP address is within the given range.
      * Source: https://gist.github.com/jonavon/2028872
-     * @param  [string]  $ip
-     * @param  [string]  $range
-     * @return boolean
+     *
+     * @param string $ip IPv4 address
+     * @param string $range IPv4 range in CIDR notation
+     *
+     * @return bool
      */
-    private function isIpInRange($ip, $range) {
-        if (strpos( $range, '/' ) == false) {
+    private function isIpInRange($ip, $range)
+    {
+        if (strpos($range, '/') == false) {
             $range .= '/32';
         }
         // $range is in IP/CIDR format eg 127.0.0.1/24
-        list( $range, $netmask ) = explode( '/', $range, 2 );
-        $range_decimal = ip2long( $range );
-        $ip_decimal = ip2long( $ip );
-        $wildcard_decimal = pow( 2, ( 32 - $netmask ) ) - 1;
-        $netmask_decimal = ~ $wildcard_decimal;
-        return ( ( $ip_decimal & $netmask_decimal ) == ( $range_decimal & $netmask_decimal ) );
+        list($range, $netmask) = explode('/', $range, 2);
+        $rangeDecimal = ip2long($range);
+        $ipDecimal = ip2long($ip);
+        $wildcardDecimal = pow(2, (32 - $netmask)) - 1;
+        $netmaskDecimal = ~$wildcardDecimal;
+        return (($ipDecimal & $netmaskDecimal) == ($rangeDecimal & $netmaskDecimal));
     }
 
-    private function isIpPermitted($ip) {
+    /**
+     * Check if the given IP address is allowed to trigger the pull.
+     *
+     * @param string $ip IPv4 address
+     *
+     * @return bool
+     */
+    private function isIpPermitted($ip)
+    {
         foreach ($this->allowedIpRanges as $range) {
             if ($this->isIpInRange($ip, $range)) {
                 return true;

@@ -15,10 +15,13 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "chmod +x vendor/tmd/auto-git-pull/scripts/git-pull.sh"
+            "chmod +x ./scripts/git-pull.sh"
         ],
         "post-update-cmd": [
-            "chmod +x vendor/tmd/auto-git-pull/scripts/git-pull.sh"
+            "chmod +x ./scripts/git-pull.sh"
         ]
+    },
+    "require": {
+        "monolog/monolog": "^1.17"
     }
 }
