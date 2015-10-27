@@ -209,10 +209,6 @@ class Deployer
      */
     private function logPostedData()
     {
-        if (empty($_POST)) {
-            return false;
-        }
-
         if (isset($_POST['payload'])) {
             $_POST['payload'] = json_decode($_POST['payload']);
         }
