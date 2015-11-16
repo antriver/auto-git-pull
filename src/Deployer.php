@@ -225,25 +225,25 @@ class Deployer
      */
     protected function getIp()
     {
-        $ip = null;
+        $ipAddress = null;
 
         if (!empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
-            $ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
+            $ipAddress = $_SERVER['HTTP_CF_CONNECTING_IP'];
         } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            $ipAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
         } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
-            $ip = $_SERVER['REMOTE_ADDR'];
+            $ipAddress = $_SERVER['REMOTE_ADDR'];
         }
 
-        if (!$ip) {
+        if (!$ipAddress) {
             return null;
         }
 
         // If there are multiple proxies, X_FORWARDED_FOR is a comma and space separated list of IPs
-        $ip = explode(', ', $ip);
+        $ipAddress = explode(', ', $ipAddress);
 
         // Use the first IP
-        return $ip[0];
+        return $ipAddress[0];
     }
 
     /**
@@ -258,16 +258,16 @@ class Deployer
         if (php_sapi_name() === 'cli') {
             $this->log("Running from PHP CLI");
         } else {
-            $ip = $this->getIp();
-            $this->log("IP is {$ip}");
+            $ipAddress = $this->getIp();
+            $this->log("IP is {$ipAddress}");
             $this->logHeaders();
             $this->logPostedData();
 
-            if (!$this->isIpPermitted($ip)) {
-                $this->log($ip . ' is not an authorised Remote IP Address', Logger::WARNING);
+            if (!$this->isIpPermitted($ipAddress)) {
+                $this->log($ipAddress . ' is not an authorised Remote IP Address', Logger::WARNING);
 
                 header('HTTP/1.1 403 Forbidden');
-                throw new Exception($ip . ' is not an authorised Remote IP Address');
+                throw new Exception($ipAddress . ' is not an authorised Remote IP Address');
             }
         }
 
