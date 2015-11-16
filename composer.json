@@ -13,14 +13,6 @@
             "Tmd\\AutoGitPull\\": "src/"
         }
     },
-    "scripts": {
-        "post-install-cmd": [
-            "chmod +x ./scripts/git-pull.sh"
-        ],
-        "post-update-cmd": [
-            "chmod +x ./scripts/git-pull.sh"
-        ]
-    },
     "require": {
         "monolog/monolog": "^1.17"
     }

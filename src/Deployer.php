@@ -273,7 +273,7 @@ class Deployer
 
         // Run the deploy script
 
-        $script = escapeshellarg($this->pullScriptPath)
+        $script = "/bin/sh " . escapeshellarg($this->pullScriptPath)
             . " -b {$this->branch}"
             . " -d " . escapeshellarg($this->directory)
             . " -r {$this->remote}";
