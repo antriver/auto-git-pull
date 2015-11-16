@@ -15,6 +15,11 @@ The reason for the separation is so you don't need to grant the web user write p
 
 * Install the latest version with `composer require tmd/auto-git-pull`
 
+* Make the pull script executable (you need to do this if you update the package as well):
+```bash
+chmod +x vendor/tmd/auto-git-pull/scripts/git-pull.sh
+```
+
 * Create a publicly accessible URL on your site which will be called by GitHub/Bitbucket and run the deployment (e.g. `http://mysite.com/deploy.php`) and set the parameters as appropriate.
 
 Example showing all the options that can be given and their default values:
