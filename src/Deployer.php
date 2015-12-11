@@ -57,7 +57,8 @@ class Deployer
      *
      * Bitbucket IPs were found here on Oct 26th 2015:
      * https://confluence.atlassian.com/bitbucket/manage-webhooks-735643732.html
-     * on Feb 29th 2014
+     * and here on Dec 11th 2015:
+     * https://blog.bitbucket.org/2015/12/03/making-bitbuckets-network-better-faster-and-ready-to-grow/
      *
      * GitHub IPs where found here on Oct 26th 2015:
      * https://help.github.com/articles/what-ip-addresses-does-github-use-that-i-should-whitelist/
